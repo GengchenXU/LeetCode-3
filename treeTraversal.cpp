@@ -2,6 +2,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include "TreeNode.h"
 using std::vector;
 using std::stack;
 using std::queue;
@@ -18,13 +19,6 @@ using std::endl;
  * };
  */
 
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    explicit TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode* l, TreeNode* r): val(x), left(l), right(r) {}
-     };
 
 class Solution {
 public:
