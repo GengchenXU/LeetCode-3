@@ -36,24 +36,102 @@ public:
 
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
         return helper(inorder, 0, inorder.size(), postorder, 0, postorder.size());
+    }
 
+    TreeNode* buildTree2(vector<int>& preorder, vector<int>& inorder) {
+        if (preorder.empty() || inorder.empty())
+            return nullptr;
+        return helper2(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+    }
+
+    void connect(TreeLinkNode *root) {
+        if (!root)
+            return;
+        linker(root->left, root->right);
+    }
+    void connect2(TreeLinkNode *root) {
+        if (!root)
+            return;
+        TreeLinkNode *head = nullptr; //leader of next level
+        TreeLinkNode *pre = nullptr;
+        TreeLinkNode *cur = root;
+        while (cur){
+
+            while (cur){
+                if (cur->left){
+                    if (!pre){
+                        head = cur->left;
+                    } else {
+                        pre->next = cur->left;
+                    }//else
+                    pre = cur->left;
+                }//if
+
+                if (cur->right){
+                    if (!pre){
+                        head = cur->right;
+                    } else {
+                        pre->next = cur->right;
+                    }//else
+                    pre = cur->right;
+                }//if
+                cur = cur->next;
+            }//while
+            cur = head;
+            head = nullptr;
+            pre = nullptr;
+        }//while
     }
 
 private:
+    vector<TreeLinkNode*> children;
+    int i;
+    TreeNode* helper2(vector<int> & preorder, int pi, int pj, vector<int>& inorder, int ii, int ij);
     TreeNode* helper(vector<int> &inorder, int infront, int intail, vector<int> &postorder, int posfront, int postail);
     bool isMirror(TreeNode* left, TreeNode* right);
+    void linker(TreeLinkNode* left, TreeLinkNode* right);
+    void linker2(TreeLinkNode* lf, TreeLinkNode* rt);
+
 };
+
+
+
+TreeNode* Solution::helper2(vector<int> & preorder, int pi, int pj, vector<int>& inorder, int ii, int ij){
+    cout << "prehead, pretail = " << pi << "    " << pj << endl;
+    cout << "inhead, intail = " << ii  << "    "<< ij << endl;
+
+    if ( pi == pj || ii == ij)
+        return nullptr;
+
+    int head = preorder[pi];
+    cout << "head = " << head << endl;
+    auto* root = new TreeNode(head);
+
+    if (pi == pj - 1 || ii == ij - 1){
+        cout << "pi = pj - 1, so return node: " << head << endl;
+        return root;
+    }
+    auto index = find(inorder.begin() + ii, inorder.begin() + ij, head);
+    auto span = index - inorder.begin() - ii;
+    cout << "span = " << span << endl;
+
+    cout << head << "'s left node" << endl;
+    root->left = helper2(preorder, pi + 1, span + pi + 1, inorder, ii, ii + span);
+    cout << head << "'s right node" << endl;
+    root->right = helper2(preorder, pi + span + 1, pj, inorder, ii + span + 1, ij);
+    cout << "return root: " << head << endl;
+    return root;
+}
+
 
 TreeNode* Solution::helper(vector<int> &inorder, int infront, int intail, vector<int> &postorder, int posfront, int postail){
     if (infront == intail || posfront == postail)
         return nullptr;
-    int mid = postorder[postail - 1];
-
-    auto f = find(inorder.begin() + infront, inorder.begin() + intail, mid);
-
-    auto dis = f - inorder.begin() - infront;
-
+    int mid = postorder[postail - 1]; //the last node is root
+    auto index = find(inorder.begin() + infront, inorder.begin() + intail, mid); //find index of root
+    auto dis = index - inorder.begin() - infront;
     auto* root = new TreeNode(mid);
+
     root -> left = helper(inorder, infront, static_cast<int>(infront + dis), postorder, posfront,
                           static_cast<int>(posfront + dis));
     root -> right = helper(inorder, static_cast<int>(infront + dis + 1), intail, postorder,
@@ -76,13 +154,62 @@ bool Solution::isMirror(TreeNode* left, TreeNode* right){
     }
 }
 
+void Solution::linker(TreeLinkNode *left, TreeLinkNode *right) {
+    if (!left || !right)
+        return;
+    left->next = right;
+    linker(left->left, left->right);
+    linker(left->right, right->left);
+    linker(right->left, right->right);
+}
+
+void Solution::linker2(TreeLinkNode *lf, TreeLinkNode *rt){
+
+    if (!lf && !rt) //both empty
+        return;
+    if (!lf){ //left is empty
+        linker2(rt->left, rt->right);
+        return;
+    }
+    if (!rt){ //right is empty
+        linker2(lf->left, lf->right);
+        return;
+    }
+    // lf and rt neither empty now
+    lf->next = rt;
+    linker2(lf->left, lf->right);
+    linker2(lf->right, rt->left);
+    linker2(rt->left, rt->right);
+
+    children.clear();
+    children.push_back(lf->left);
+    children.push_back(lf->right);
+    children.push_back(rt->left);
+    children.push_back(rt->right);
+    for (i = 0; i < 4; ++i) {
+
+        if (children[i]){
+            for (int j = i; j < 4; ++j){
+                if (children[j]){
+                    children[i]->next = children[j];
+                    i = j;
+                }//if
+            }//for
+        }//if
+    }//for
+
+}
+
 int main() {
-    TreeNode c(2), d(3), e(1);
+//    TreeNode c(2), d(3), e(1);
 //    TreeNode b(2, &c, &d);
-    TreeNode a(4, &c, &e);
+//    TreeNode a(4, &c, &e);
     Solution s;
 //    cout << s.maxDepth(&a) << endl;
 //    cout << s.isSymmetric(&a) << endl;
-    cout << s.hasPathSum(&a, 6) << endl;
+//    cout << s.hasPathSum(&a, 6) << endl;
+    vector<int> a {1,2};
+    vector<int> b {2, 1};
+    s.buildTree2(a, b);
     return 0;
 }

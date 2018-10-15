@@ -15,5 +15,11 @@ public:
     TreeNode(int x, TreeNode* l, TreeNode* r): val(x), left(l), right(r){}
 };
 
+struct TreeLinkNode {
+    TreeLinkNode *left;
+    TreeLinkNode *right;
+    TreeLinkNode *next;
+};
+
 
 #endif //LEETCODE_TREENODE_H
