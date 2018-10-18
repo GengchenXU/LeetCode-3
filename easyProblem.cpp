@@ -1,13 +1,10 @@
 //
 // Created by admin on 2018/10/16.
 //
-
- struct ListNode {
-     int val;
-     ListNode *next;
-
-     explicit ListNode(int x) : val(x), next(nullptr) {}
- };
+#include "TreeNode.h"
+#include <string>
+#include <vector>
+using namespace std;
 
 class Solution {
 public:
@@ -106,5 +103,21 @@ public:
             }
         }
         return root;
+    }
+
+    string longestCommonPrefix(vector<string>& strs) {
+        int len = strs.front().length();
+        string res;
+
+        for (int i = 0; i < len; ++i) {
+            res += strs.front()[i];
+            for (auto word: strs){
+                if (word[i] != res[res.length() - 1]){
+                    res.pop_back();
+                    return res;
+                }
+            }//for
+        }//for
+        return res;
     }
 };
