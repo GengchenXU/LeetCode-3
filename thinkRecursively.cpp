@@ -8,6 +8,23 @@
 
 using namespace std;
 
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if (!root)
+            return "[]";
+        string a{};
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+
+    }
+};
+
+
 class Solution{
 public:
     int maxDepth(TreeNode* root) {
@@ -83,9 +100,23 @@ public:
         }//while
     }
 
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root || root == p || root == q)
+            return root;
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        return !left ? right : !right ? left : root;
+    }
+    TreeNode* lowestCommonAncestor2(TreeNode* root, TreeNode* p, TreeNode* q){
+        TreeNode *res = nullptr;
+        helper(root, p, q, &res);
+        return res;
+    }
+
 private:
     vector<TreeLinkNode*> children;
-    int i;
+    int i{};
+    bool helper(TreeNode* root, TreeNode *p, TreeNode *q, TreeNode **res);
     TreeNode* helper2(vector<int> & preorder, int pi, int pj, vector<int>& inorder, int ii, int ij);
     TreeNode* helper(vector<int> &inorder, int infront, int intail, vector<int> &postorder, int posfront, int postail);
     bool isMirror(TreeNode* left, TreeNode* right);
@@ -198,6 +229,22 @@ void Solution::linker2(TreeLinkNode *lf, TreeLinkNode *rt){
         }//if
     }//for
 
+}
+
+bool Solution::helper(TreeNode *root, TreeNode *p, TreeNode *q, TreeNode **res) {
+    if (!root)
+        return false;
+    if (res)
+        return false;
+    int fount = (root == q || root == p);
+    fount += helper(root->left, p, q, res);
+    fount += helper(root->right, p, q, res);
+    if (fount == 2){
+        *res = root;
+        return false;
+    } else {
+        return fount > 0;
+    }
 }
 
 int main() {
