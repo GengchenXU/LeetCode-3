@@ -8,7 +8,7 @@ using namespace std;
 
 class Node {
 public:
-    int val = nullptr;
+    int val = 0;
     vector<Node*> children;
 
     Node() {}

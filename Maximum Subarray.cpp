@@ -13,9 +13,3 @@ int maxSubArray(int* nums, int numsSize) {
     }
     return max;
 }
-
-int main(){
-    int a[] = {2, 6, -3,-1,2,9 -3, };
-    printf("%d ", maxSubArray(a, 6));
-
-}
