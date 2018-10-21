@@ -121,3 +121,19 @@ public:
         return res;
     }
 };
+
+int lengthOfLastWord(char* s) {
+    int len = 0;
+    int res = 0;
+    for (int i = 0; s[i] != '\0'; i++) {
+        len++;
+    }
+    char *p = s + len - 1;
+    while (*p == ' ' && (p > s))
+        p--;
+    while ((*p != ' ') && p >= s){
+        p--;
+        res++;
+    }
+    return res;
+}
