@@ -74,10 +74,10 @@ public:
     }
 };
 
-int main(){
-    Solution s;
-    vector<int> a{1, 0};
-    for (auto b: s.plusOne(a))
-        cout << b << endl;
-    return 0;
-}
+//int main(){
+//    Solution s;
+//    vector<int> a{1, 0};
+//    for (auto b: s.plusOne(a))
+//        cout << b << endl;
+//    return 0;
+//}
