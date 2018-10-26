@@ -10,6 +10,7 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+#include "TreeNode.h"
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {

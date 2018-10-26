@@ -111,9 +111,9 @@ public:
     }
 };
 
-int main(){
-    Solution s;
-    vector<int> a{1,1,1,1,2,2,2,3,3,5};
-    cout << s.removeDuplicates(a) << endl;
-    return 0;
-}
+//int main(){
+//    Solution s;
+//    vector<int> a{1,1,1,1,2,2,2,3,3,5};
+//    cout << s.removeDuplicates(a) << endl;
+//    return 0;
+//}
