@@ -52,11 +52,3 @@ public:
     }
 
 };
-
-int main(){
-    KMP s;
-//    s.generator("AAACAAAA");
-    int res = s.strStr("fffifffdfffa", "fffa");
-    cout << res << endl;
-    return 0;
-}
