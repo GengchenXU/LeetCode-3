@@ -52,8 +52,43 @@ private:
     }
 };
 
+void inorder(TreeNode *root, TreeNode *init){
+    if (!root)
+        return;
+    inorder(root->left, init);
+    init->right = new TreeNode(root->val);
+    cout << "new " << root->val << "    ";
+    init = init->right;
+    cout << " " << init->val << " ";
+    inorder(root->right, init);
+}
+TreeNode* increasingBST(TreeNode* root) {
+    auto init = new TreeNode(0);
+    inorder(root, init);
+    return init->right;
+}
 
 
+vector<int> largestValues(TreeNode* root) {
+    queue < TreeNode * > q;
+    q.push(root);
+    vector<int> res;
+    while (!q.empty()) {
+        int size = q.size();
+        int ans = q.front()->val;
+        for (int i = 0; i < size; i++) {
+            auto front = q.front();
+            ans = max(front->val, ans);
+            if (front->left)
+                q.push(front->left);
+            if (front->left)
+                q.push(front->right);
+            q.pop();
+        } //for
+        res.push_back(ans);
+    }//while
+    return res;
+}
 class KthLargest {
 public:
     KthLargest(int k, vector<int> nums) {
