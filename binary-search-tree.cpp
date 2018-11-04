@@ -3,7 +3,8 @@
 //
 
 #include "TreeNode.h"
-
+#include <iostream>
+using namespace std;
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -120,8 +121,39 @@ private:
 
 };
 
+
 /**
  * Your KthLargest object will be instantiated and called as such:
  * KthLargest obj = new KthLargest(k, nums);
  * int param_1 = obj.add(val);
  */
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution1 {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        auto init = new ListNode(0);
+        ListNode *p = init;
+        init->next = head;
+        while (p && p->next){
+            if (p->next->val == val){
+                if (p->next->next){
+                    cout << "haha " ;
+                    p->next = p->next->next;
+                } else
+                    p->next = nullptr;
+            } else {
+                cout << val ;
+                p = p->next;
+            }
+        } //while
+        return init->next;
+    }
+};
